@@ -1,9 +1,7 @@
-use std::{
-    fs::File,
-    io::{prelude::*, BufReader},
-};
+use std::time::Instant;
 
-const INPUT_PATH: &str = "input.txt";
+use aoc_2022::read_input;
+use aoc_2022::{DayResult, PartResult};
 
 #[derive(Debug)]
 struct Task {
@@ -18,13 +16,19 @@ impl Task {
 }
 
 fn main() {
-    let input = file_to_vec(INPUT_PATH);
+    let input = read_input(4);
 
-    part1(&input);
-    part2(input);
+    println!(
+        "{}",
+        DayResult {
+            part1: part1(&input),
+            part2: part2(input)
+        }
+    );
 }
 
-fn part1(input: &Vec<String>) {
+fn part1(input: &Vec<String>) -> PartResult<i32> {
+    let now = Instant::now();
     let mut counter: i32 = 0;
 
     for line in input {
@@ -45,10 +49,14 @@ fn part1(input: &Vec<String>) {
             counter = counter.wrapping_add(1);
         }
     }
-    println!("part1: {}", counter);
+    PartResult {
+        solution: counter,
+        execution_time: now.elapsed(),
+    }
 }
 
-fn part2(input: Vec<String>) {
+fn part2(input: Vec<String>) -> PartResult<i32> {
+    let now = Instant::now();
     let mut counter: i32 = 0;
 
     for line in input {
@@ -71,14 +79,8 @@ fn part2(input: Vec<String>) {
             }
         }
     }
-    println!("part2: {}", counter);
-}
-fn file_to_vec(filename: &str) -> Vec<String> {
-    let file = File::open(filename).expect("no such file");
-    let buffer = BufReader::new(file);
-
-    buffer
-        .lines()
-        .map(|line| line.expect("Could not parse line"))
-        .collect()
+    PartResult {
+        solution: counter,
+        execution_time: now.elapsed(),
+    }
 }

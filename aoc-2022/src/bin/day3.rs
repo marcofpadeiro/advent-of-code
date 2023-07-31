@@ -1,22 +1,26 @@
-use std::{
-    collections::HashMap,
-    fs::File,
-    io::{prelude::*, BufReader},
-};
+use std::collections::HashMap;
+use std::time::Instant;
+
+use aoc_2022::read_input;
+use aoc_2022::{DayResult, PartResult};
 
 const CONVERT_LOWERCASE_VALUE: i32 = 96;
 const CONVERT_UPPERCASE_VALUE: i32 = 38;
 
-const INPUT_PATH: &str = "input.txt";
-
 fn main() {
-    let input = file_to_vec(INPUT_PATH);
+    let input = read_input(3);
 
-    part1(&input);
-    part2(input);
+    println!(
+        "{}",
+        DayResult {
+            part1: part1(&input),
+            part2: part2(input)
+        }
+    );
 }
 
-fn part1(input: &Vec<String>) {
+fn part1(input: &Vec<String>) -> PartResult<i32> {
+    let now = Instant::now();
     let mut sum: i32 = 0;
 
     for line in input {
@@ -40,10 +44,14 @@ fn part1(input: &Vec<String>) {
             }
         }
     }
-    println!("part1: {}", sum);
+    PartResult {
+        solution: sum,
+        execution_time: now.elapsed(),
+    }
 }
 
-fn part2(input: Vec<String>) {
+fn part2(input: Vec<String>) -> PartResult<i32> {
+    let now = Instant::now();
     let mut sum: i32 = 0;
 
     let mut count: i8 = 0;
@@ -81,15 +89,9 @@ fn part2(input: Vec<String>) {
             count = 0;
         }
     }
-    println!("part2: {}", sum);
-}
 
-fn file_to_vec(filename: &str) -> Vec<String> {
-    let file = File::open(filename).expect("no such file");
-    let buffer = BufReader::new(file);
-
-    buffer
-        .lines()
-        .map(|line| line.expect("Could not parse line"))
-        .collect()
+    PartResult {
+        solution: sum,
+        execution_time: now.elapsed(),
+    }
 }

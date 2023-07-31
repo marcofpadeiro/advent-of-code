@@ -1,10 +1,59 @@
-use std::{
-    collections::HashMap,
-    fs::File,
-    io::{prelude::*, BufReader},
-};
+use std::collections::HashMap;
+use std::time::Instant;
 
-const INPUT_PATH: &str = "input.txt";
+use aoc_2022::read_input;
+use aoc_2022::{DayResult, PartResult};
+
+fn main() {
+    let input = read_input(2);
+
+    println!(
+        "{}",
+        DayResult {
+            part1: part1(&input),
+            part2: part2(input)
+        }
+    );
+}
+fn part1(input: &Vec<String>) -> PartResult<i32> {
+    let now = Instant::now();
+
+    let points_system = initialize_points_system();
+    let mut total_points = 0;
+
+    for line in input {
+        let round: Round = Round {
+            their_play: line.chars().nth(0).unwrap(),
+            my_play: line.chars().nth(2).unwrap(),
+        };
+        total_points += round.determine_round_points_part1(&points_system);
+    }
+
+    PartResult {
+        solution: total_points,
+        execution_time: now.elapsed(),
+    }
+}
+
+fn part2(input: Vec<String>) -> PartResult<i32> {
+    let now = Instant::now();
+
+    let points_system = initialize_points_system();
+    let mut total_points = 0;
+
+    for line in input {
+        let round: Round = Round {
+            their_play: line.chars().nth(0).unwrap(),
+            my_play: line.chars().nth(2).unwrap(),
+        };
+        total_points += round.determine_round_points_part2(&points_system);
+    }
+
+    PartResult {
+        solution: total_points,
+        execution_time: now.elapsed(),
+    }
+}
 
 struct Round {
     my_play: char,
@@ -49,26 +98,6 @@ impl Round {
     }
 }
 
-fn main() {
-    let input = file_to_vec(INPUT_PATH);
-
-    let points_system = initialize_points_system();
-    let mut total_points_part1 = 0;
-    let mut total_points_part2 = 0;
-
-    for line in input {
-        let round: Round = Round {
-            their_play: line.chars().nth(0).unwrap(),
-            my_play: line.chars().nth(2).unwrap(),
-        };
-        total_points_part1 += round.determine_round_points_part1(&points_system);
-        total_points_part2 += round.determine_round_points_part2(&points_system);
-    }
-
-    println!("part1: {}", total_points_part1);
-    print!("part2: {}", total_points_part2);
-}
-
 fn initialize_points_system() -> HashMap<char, i32> {
     let mut points_system: HashMap<char, i32> = HashMap::new();
 
@@ -80,14 +109,4 @@ fn initialize_points_system() -> HashMap<char, i32> {
     points_system.insert('Z', 3); // scissors
 
     points_system
-}
-
-fn file_to_vec(filename: &str) -> Vec<String> {
-    let file = File::open(filename).expect("no such file");
-    let buffer = BufReader::new(file);
-
-    buffer
-        .lines()
-        .map(|line| line.expect("Could not parse line"))
-        .collect()
 }

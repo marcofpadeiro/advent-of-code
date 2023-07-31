@@ -1,9 +1,7 @@
-use std::{
-    fs::File,
-    io::{prelude::*, BufReader},
-};
+use std::time::Instant;
 
-const INPUT_PATH: &str = "input.txt";
+use aoc_2022::read_input;
+use aoc_2022::{DayResult, PartResult};
 
 enum State {
     Gathering,
@@ -11,12 +9,19 @@ enum State {
 }
 
 fn main() {
-    let input = file_to_vec(INPUT_PATH);
+    let input = read_input(5);
 
-    part1(&input);
+    println!(
+        "{}",
+        DayResult {
+            part1: part1(&input),
+            part2: part2(input)
+        }
+    );
 }
 
-fn part1(input: &Vec<String>) {
+fn part1(input: &Vec<String>) -> PartResult<String> {
+    let now = Instant::now();
     let mut stack: [Vec<char>; 9] = Default::default();
 
     let mut state: State = State::Gathering;
@@ -34,7 +39,35 @@ fn part1(input: &Vec<String>) {
         outcome += pile.last().unwrap().to_string().as_str();
     }
 
-    println!("part1: {}", outcome);
+    PartResult {
+        solution: outcome,
+        execution_time: now.elapsed(),
+    }
+}
+
+fn part2(input: Vec<String>) -> PartResult<String> {
+    let now = Instant::now();
+    let mut stack: [Vec<char>; 9] = Default::default();
+
+    let mut state: State = State::Gathering;
+
+    for line in input {
+        match state {
+            State::Gathering => state = gather_stack(&line, &mut stack),
+            State::Stacking => rearrange_2(&line, &mut stack),
+        }
+    }
+
+    let mut outcome = String::new();
+
+    for pile in &stack {
+        outcome += pile.last().unwrap().to_string().as_str();
+    }
+
+    PartResult {
+        solution: outcome,
+        execution_time: now.elapsed(),
+    }
 }
 
 fn gather_stack(line: &String, stack: &mut [Vec<char>]) -> State {
@@ -65,6 +98,18 @@ fn rearrange(line: &String, stack: &mut [Vec<char>]) {
     }
 }
 
+fn rearrange_2(line: &String, stack: &mut [Vec<char>]) {
+    if let Ok((amount, from_stack, to_stack)) = parse_rearrange(line) {
+        let start = stack.get(from_stack).unwrap().len().wrapping_sub(amount);
+        for _ in start..stack.get(from_stack).unwrap().len() {
+            if let Some(val) = stack.get(from_stack).unwrap().get(start) {
+                stack[to_stack].push(*val);
+                stack.get_mut(from_stack).unwrap().remove(start);
+            }
+        }
+    }
+}
+
 fn parse_rearrange(order: &String) -> Result<(usize, usize, usize), ()> {
     let mut numbers: Vec<i32> = Vec::new();
 
@@ -83,14 +128,4 @@ fn parse_rearrange(order: &String) -> Result<(usize, usize, usize), ()> {
         (numbers[1] - 1) as usize,
         (numbers[2] - 1) as usize,
     ))
-}
-
-fn file_to_vec(filename: &str) -> Vec<String> {
-    let file = File::open(filename).expect("no such file");
-    let buffer = BufReader::new(file);
-
-    buffer
-        .lines()
-        .map(|line| line.expect("Could not parse line"))
-        .collect()
 }
