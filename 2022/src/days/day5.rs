@@ -3,14 +3,14 @@ use std::time::Instant;
 use aoc_2022::Day;
 use aoc_2022::PartResult;
 
-pub struct DayInstance;
+pub struct Day5;
 
 enum State {
     Gathering,
     Stacking,
 }
 
-impl Day<String> for DayInstance {
+impl Day<String> for Day5 {
     fn part1(&self, input: &Vec<String>) -> PartResult<String> {
         let now = Instant::now();
         let mut stack: [Vec<char>; 9] = Default::default();

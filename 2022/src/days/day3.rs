@@ -4,13 +4,13 @@ use std::time::Instant;
 use aoc_2022::Day;
 use aoc_2022::PartResult;
 
-pub struct DayInstance;
+pub struct Day3;
 
 const CONVERT_LOWERCASE_VALUE: i32 = 96;
 const CONVERT_UPPERCASE_VALUE: i32 = 38;
 
-impl Day<i32> for DayInstance {
-    fn part1(&self, input: &Vec<String>) -> PartResult<i32> {
+impl Day<String> for Day3 {
+    fn part1(&self, input: &Vec<String>) -> PartResult<String> {
         let now = Instant::now();
         let mut sum: i32 = 0;
 
@@ -36,11 +36,11 @@ impl Day<i32> for DayInstance {
             }
         }
         PartResult {
-            solution: sum,
+            solution: sum.to_string(),
             execution_time: now.elapsed(),
         }
     }
-    fn part2(&self, input: &Vec<String>) -> PartResult<i32> {
+    fn part2(&self, input: &Vec<String>) -> PartResult<String> {
         let now = Instant::now();
         let mut sum: i32 = 0;
 
@@ -81,7 +81,7 @@ impl Day<i32> for DayInstance {
         }
 
         PartResult {
-            solution: sum,
+            solution: sum.to_string(),
             execution_time: now.elapsed(),
         }
     }

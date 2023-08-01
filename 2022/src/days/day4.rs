@@ -3,7 +3,7 @@ use std::time::Instant;
 use aoc_2022::Day;
 use aoc_2022::PartResult;
 
-pub struct DayInstance;
+pub struct Day4;
 
 #[derive(Debug)]
 struct Task {
@@ -17,8 +17,8 @@ impl Task {
     }
 }
 
-impl Day<i32> for DayInstance {
-    fn part1(&self, input: &Vec<String>) -> PartResult<i32> {
+impl Day<String> for Day4 {
+    fn part1(&self, input: &Vec<String>) -> PartResult<String> {
         let now = Instant::now();
         let mut counter: i32 = 0;
 
@@ -41,12 +41,12 @@ impl Day<i32> for DayInstance {
             }
         }
         PartResult {
-            solution: counter,
+            solution: counter.to_string(),
             execution_time: now.elapsed(),
         }
     }
 
-    fn part2(&self, input: &Vec<String>) -> PartResult<i32> {
+    fn part2(&self, input: &Vec<String>) -> PartResult<String> {
         let now = Instant::now();
         let mut counter: i32 = 0;
 
@@ -71,7 +71,7 @@ impl Day<i32> for DayInstance {
             }
         }
         PartResult {
-            solution: counter,
+            solution: counter.to_string(),
             execution_time: now.elapsed(),
         }
     }

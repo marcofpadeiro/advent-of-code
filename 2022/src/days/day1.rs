@@ -2,10 +2,10 @@ use std::time::Instant;
 
 use aoc_2022::{Day, PartResult};
 
-pub struct DayInstance;
+pub struct Day1;
 
-impl Day<i32> for DayInstance {
-    fn part1(&self, input: &Vec<String>) -> PartResult<i32> {
+impl Day<String> for Day1 {
+    fn part1(&self, input: &Vec<String>) -> PartResult<String> {
         let now = Instant::now();
 
         let mut curr_max: i32 = 0;
@@ -24,12 +24,12 @@ impl Day<i32> for DayInstance {
         }
 
         PartResult {
-            solution: curr_max,
+            solution: curr_max.to_string(),
             execution_time: now.elapsed(),
         }
     }
 
-    fn part2(&self, input: &Vec<String>) -> PartResult<i32> {
+    fn part2(&self, input: &Vec<String>) -> PartResult<String> {
         let now = Instant::now();
 
         let mut vals: Vec<i32> = Vec::new();
@@ -47,7 +47,7 @@ impl Day<i32> for DayInstance {
         vals.sort();
 
         PartResult {
-            solution: vals.into_iter().rev().take(3).sum::<i32>(),
+            solution: vals.into_iter().rev().take(3).sum::<i32>().to_string(),
             execution_time: now.elapsed(),
         }
     }
