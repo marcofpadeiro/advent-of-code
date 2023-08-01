@@ -1,57 +1,49 @@
 use std::collections::HashMap;
 use std::time::Instant;
 
-use aoc_2022::read_input;
-use aoc_2022::{DayResult, PartResult};
+use aoc_2022::{Day, PartResult};
 
-fn main() {
-    let input = read_input(2);
+pub struct DayInstance;
 
-    println!(
-        "{}",
-        DayResult {
-            part1: part1(&input),
-            part2: part2(input)
+impl Day<i32> for DayInstance {
+    fn part1(&self, input: &Vec<String>) -> PartResult<i32> {
+        let now = Instant::now();
+
+        let points_system = initialize_points_system();
+        let mut total_points = 0;
+
+        for line in input {
+            let round: Round = Round {
+                their_play: line.chars().nth(0).unwrap(),
+                my_play: line.chars().nth(2).unwrap(),
+            };
+            total_points += round.determine_round_points_part1(&points_system);
         }
-    );
-}
-fn part1(input: &Vec<String>) -> PartResult<i32> {
-    let now = Instant::now();
 
-    let points_system = initialize_points_system();
-    let mut total_points = 0;
-
-    for line in input {
-        let round: Round = Round {
-            their_play: line.chars().nth(0).unwrap(),
-            my_play: line.chars().nth(2).unwrap(),
-        };
-        total_points += round.determine_round_points_part1(&points_system);
+        PartResult {
+            solution: total_points,
+            execution_time: now.elapsed(),
+        }
     }
 
-    PartResult {
-        solution: total_points,
-        execution_time: now.elapsed(),
-    }
-}
+    fn part2(&self, input: &Vec<String>) -> PartResult<i32> {
+        let now = Instant::now();
 
-fn part2(input: Vec<String>) -> PartResult<i32> {
-    let now = Instant::now();
+        let points_system = initialize_points_system();
+        let mut total_points = 0;
 
-    let points_system = initialize_points_system();
-    let mut total_points = 0;
+        for line in input {
+            let round: Round = Round {
+                their_play: line.chars().nth(0).unwrap(),
+                my_play: line.chars().nth(2).unwrap(),
+            };
+            total_points += round.determine_round_points_part2(&points_system);
+        }
 
-    for line in input {
-        let round: Round = Round {
-            their_play: line.chars().nth(0).unwrap(),
-            my_play: line.chars().nth(2).unwrap(),
-        };
-        total_points += round.determine_round_points_part2(&points_system);
-    }
-
-    PartResult {
-        solution: total_points,
-        execution_time: now.elapsed(),
+        PartResult {
+            solution: total_points,
+            execution_time: now.elapsed(),
+        }
     }
 }
 

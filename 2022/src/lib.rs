@@ -42,6 +42,6 @@ impl<T: Display> Display for DayResult<T> {
 }
 
 pub trait Day<T: Display> {
-    fn part1(&self, input: &str) -> PartResult<T>;
-    fn part2(&self, input: &str) -> PartResult<T>;
+    fn part1(&self, input: &Vec<String>) -> PartResult<T>;
+    fn part2(&self, input: &Vec<String>) -> PartResult<T>;
 }

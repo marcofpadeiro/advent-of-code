@@ -1,72 +1,64 @@
 use std::time::Instant;
 
-use aoc_2022::read_input;
-use aoc_2022::{DayResult, PartResult};
+use aoc_2022::Day;
+use aoc_2022::PartResult;
+
+pub struct DayInstance;
 
 enum State {
     Gathering,
     Stacking,
 }
 
-fn main() {
-    let input = read_input(5);
+impl Day<String> for DayInstance {
+    fn part1(&self, input: &Vec<String>) -> PartResult<String> {
+        let now = Instant::now();
+        let mut stack: [Vec<char>; 9] = Default::default();
 
-    println!(
-        "{}",
-        DayResult {
-            part1: part1(&input),
-            part2: part2(input)
+        let mut state: State = State::Gathering;
+
+        for line in input {
+            match state {
+                State::Gathering => state = gather_stack(line, &mut stack),
+                State::Stacking => rearrange(line, &mut stack),
+            }
         }
-    );
-}
 
-fn part1(input: &Vec<String>) -> PartResult<String> {
-    let now = Instant::now();
-    let mut stack: [Vec<char>; 9] = Default::default();
+        let mut outcome = String::new();
 
-    let mut state: State = State::Gathering;
-
-    for line in input {
-        match state {
-            State::Gathering => state = gather_stack(line, &mut stack),
-            State::Stacking => rearrange(line, &mut stack),
+        for pile in &stack {
+            outcome += pile.last().unwrap().to_string().as_str();
         }
-    }
 
-    let mut outcome = String::new();
-
-    for pile in &stack {
-        outcome += pile.last().unwrap().to_string().as_str();
-    }
-
-    PartResult {
-        solution: outcome,
-        execution_time: now.elapsed(),
-    }
-}
-
-fn part2(input: Vec<String>) -> PartResult<String> {
-    let now = Instant::now();
-    let mut stack: [Vec<char>; 9] = Default::default();
-
-    let mut state: State = State::Gathering;
-
-    for line in input {
-        match state {
-            State::Gathering => state = gather_stack(&line, &mut stack),
-            State::Stacking => rearrange_2(&line, &mut stack),
+        PartResult {
+            solution: outcome,
+            execution_time: now.elapsed(),
         }
     }
 
-    let mut outcome = String::new();
+    fn part2(&self, input: &Vec<String>) -> PartResult<String> {
+        let now = Instant::now();
+        let mut stack: [Vec<char>; 9] = Default::default();
 
-    for pile in &stack {
-        outcome += pile.last().unwrap().to_string().as_str();
-    }
+        let mut state: State = State::Gathering;
 
-    PartResult {
-        solution: outcome,
-        execution_time: now.elapsed(),
+        for line in input {
+            match state {
+                State::Gathering => state = gather_stack(&line, &mut stack),
+                State::Stacking => rearrange_2(&line, &mut stack),
+            }
+        }
+
+        let mut outcome = String::new();
+
+        for pile in &stack {
+            outcome += pile.last().unwrap().to_string().as_str();
+        }
+
+        PartResult {
+            solution: outcome,
+            execution_time: now.elapsed(),
+        }
     }
 }
 
