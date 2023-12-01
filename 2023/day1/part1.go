@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-	start := time.Now()
 
 	file, err := os.Open("input.txt")
 
@@ -19,6 +18,8 @@ func main() {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+
+	start := time.Now()
 
 	total := 0
 
