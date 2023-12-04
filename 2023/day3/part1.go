@@ -47,7 +47,6 @@ func main() {
 					inNumber = false
 					rightPointer := i - 1
 
-					fmt.Println(number, "is ", checkIfNumberLegal(lines, line_index, i, leftPointer, rightPointer))
 					if checkIfNumberLegal(lines, line_index, i, leftPointer, rightPointer) {
 						total += number
 					}
@@ -59,7 +58,6 @@ func main() {
 					inNumber = false
 					rightPointer := i - 1
 
-					fmt.Println(number, "is ", checkIfNumberLegal(lines, line_index, i, leftPointer, rightPointer))
 					if checkIfNumberLegal(lines, line_index, i, leftPointer, rightPointer) {
 						total += number
 					}
@@ -111,10 +109,10 @@ func checkIfNumberLegal(lines [][]rune, line_index, col_index, leftPointer, righ
 		}
 	}
 
-	fmt.Println(col_index, lines[line_index][leftMargin], lines[line_index][rightMargin])
 	if isSymbol(lines[line_index][leftMargin]) || isSymbol(lines[line_index][rightMargin]) {
 		isValid = true
 	}
 
 	return isValid
 }
+
