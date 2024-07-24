@@ -4,30 +4,51 @@ import java.lang.reflect.Constructor;
 import java.util.Scanner;
 
 public class Main {
+    private static final boolean GET_INPUT = false;
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in)
-                ;
+        int input = 0;
+
+        if (GET_INPUT) {
+            input = getUserInput();
+            if (input == -1) {
+                return;
+            } else if (input == 0) {
+                input = findLatestDay();
+            }
+        } else {
+            input = findLatestDay();
+        }
+
+        Day day = getDay(input);
+
+        System.out.println(day);
+    }
+
+    public static int getUserInput() {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter day (1..25) [default: most recent]: ");
 
         String input = scanner.nextLine();
 
         int i;
         if (input.trim().isEmpty()) {
-            i = findLatestDay();
+            return 0;
         } else {
             try {
                 i = Integer.parseInt(input.trim());
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number between 1 and 25.");
                 scanner.close();
-                return;
+                return -1;
             }
         }
 
-        Day day = getDay(i);
-        System.out.println(day);
 
         scanner.close();
+
+        return i;
+
     }
 
     private static Day getDay(int day) {
