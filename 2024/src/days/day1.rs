@@ -13,9 +13,12 @@ impl Day<String> for Day1 {
         let mut right_list: Vec<u32> = vec![];
 
         for line in input {
-            let line: Vec<&str> = line.split(' ').collect();
-            left_list.push(line[0].parse::<u32>().unwrap());
-            right_list.push(line[3].parse::<u32>().unwrap());
+            let mut parts = line.split_whitespace();
+            let left = parts.next().unwrap().parse::<u32>().unwrap();
+            let right = parts.next().unwrap().parse::<u32>().unwrap();
+
+            left_list.push(left);
+            right_list.push(right);
         }
 
         left_list.sort();
@@ -38,9 +41,9 @@ impl Day<String> for Day1 {
         let mut list: HashMap<u32, (u32, bool)> = HashMap::new();
 
         for line in input {
-            let line: Vec<&str> = line.split(' ').collect();
-            let left = line[0].parse::<u32>().unwrap();
-            let right = line[3].parse::<u32>().unwrap();
+            let mut parts = line.split_whitespace();
+            let left = parts.next().unwrap().parse::<u32>().unwrap();
+            let right = parts.next().unwrap().parse::<u32>().unwrap();
 
             let entry = list.entry(left).or_insert((0, true));
             if !entry.1 {
