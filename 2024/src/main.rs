@@ -36,6 +36,10 @@ fn main() {
             part1: day5::Day5.part1(&input),
             part2: day5::Day5.part2(&input),
         },
+        7 => DayResult {
+            part1: day7::Day7.part1(&input),
+            part2: day7::Day7.part2(&input),
+        },
         _ => {
             println!("Needs to be 1 to 25!");
             process::exit(1);
